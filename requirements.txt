@@ -1,0 +1,26 @@
+# --- J.A.R.V.I.S PROJECT DEPENDENCIES ---
+
+# Core
+eel
+google-genai
+cryptography
+
+# Audio & Speech
+playsound
+pyaudio
+SpeechRecognition
+pvporcupine
+pyttsx3
+edge_tts
+pygame-ce
+
+# System Automation
+pyautogui
+pygetwindow
+pywhatkit
+psutil
+
+# Utils
+requests
+pywin32
+

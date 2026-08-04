@@ -1,0 +1,12 @@
+venv_jarvis/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+contacts.csv
+jarvis.db
+/engine/cookies.json
+.env
+.key
+vault.bin
+.vault
