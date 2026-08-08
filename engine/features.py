@@ -336,7 +336,7 @@ def chatBot(query, lang='en'):
             return "Key missing"
 
         try:
-            eel.showThinking()()
+            eel.showThinking()
         except Exception:
             pass
 

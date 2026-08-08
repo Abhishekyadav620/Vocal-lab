@@ -274,6 +274,7 @@ def allCommands(message=1):
         eel.senderText(query)
     else:
         query = str(message).lower()
+        eel.DisplayMessage(query)
         eel.senderText(query)
 
     if not query or query.strip() == "":
