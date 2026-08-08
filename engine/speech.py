@@ -168,8 +168,14 @@ def speak(text, lang=None):
     if lang is None:
         lang = detectLanguage(text)
 
-    eel.DisplayMessage(text)
-    eel.receiverText(text)
+    try:
+        eel.DisplayMessage(text)
+    except Exception:
+        pass
+    try:
+        eel.receiverText(text)
+    except Exception:
+        pass
 
     # Use Edge TTS neural voices (premium quality), with gTTS and pyttsx3 as fallbacks
     _speakWithEdgeTTS(text, lang if lang in ('hi', 'bn', 'en') else 'en')

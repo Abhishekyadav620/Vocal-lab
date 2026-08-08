@@ -271,14 +271,26 @@ def allCommands(message=1):
     if message == 1:
         query = takecommand()
         print(query)
-        eel.senderText(query)
+        try:
+            eel.senderText(query)
+        except Exception:
+            pass
     else:
         query = str(message).lower()
-        eel.DisplayMessage(query)
-        eel.senderText(query)
+        try:
+            eel.DisplayMessage(query)
+        except Exception:
+            pass
+        try:
+            eel.senderText(query)
+        except Exception:
+            pass
 
     if not query or query.strip() == "":
-        eel.ShowHood()
+        try:
+            eel.ShowHood()
+        except Exception:
+            pass
         return
 
     try:
@@ -343,7 +355,10 @@ def allCommands(message=1):
     except Exception as e:
         print("error: ", e)
 
-    eel.ShowHood()
+    try:
+        eel.ShowHood()
+    except Exception:
+        pass
 
 
 # ==================== REAL-TIME SYSTEM STATS ====================
