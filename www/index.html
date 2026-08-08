@@ -46,6 +46,8 @@
                 <svg viewBox="0 0 30 30" width="22" height="22"><circle cx="15" cy="15" r="13" fill="none" stroke="#00d4ff" stroke-width="1.5"/><text x="15" y="19" text-anchor="middle" fill="#00d4ff" font-size="11" font-family="Orbitron" font-weight="700">S</text></svg>
                 <span class="tb-title">IRONMAN JARVIS</span>
                 <span class="tb-sub">// TUSAR</span>
+                <button class="mobile-toggle-btn d-md-none ms-2" onclick="toggleLeftPanel()"><i class="bi bi-layout-sidebar"></i></button>
+                <button class="mobile-toggle-btn d-md-none" onclick="toggleRightPanel()"><i class="bi bi-layout-sidebar-reverse"></i></button>
             </div>
             <div class="tb-center">
                 <button class="sys-btn" onclick="if(confirm('Shutdown?'))quickCmd('shutdown')"><i class="bi bi-power"></i> SHUTDOWN</button>
@@ -180,7 +182,7 @@
     <script src="https://unpkg.com/siriwave/dist/siriwave.umd.min.js"></script>
     <script src="assets/vendore/texllate/jquery.fittext.js"></script>
     <script src="assets/vendore/texllate/jquery.lettering.js"></script>
-    <script src="https://jschr.github.io/textillate/jquery.textillate.js"></script>
+    <script src="assets/vendore/texllate/jquery.textillate.js"></script>
     <script src="script.js"></script>
     <script src="main.js"></script>
     <script src="controller.js"></script>
