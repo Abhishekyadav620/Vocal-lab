@@ -6,6 +6,12 @@ $(document).ready(function () {
         $('.siri-message').textillate('start');
     }
 
+    eel.expose(showThinking);
+    function showThinking() {
+        $(".siri-message li:first").html('<span class="thinking-text"><i class="bi bi-cpu-fill me-2"></i>THINKING...</span>');
+        $('.siri-message').textillate('start');
+    }
+
     eel.expose(ShowHood);
     function ShowHood() {
         $("#SuitSection").removeClass("dim");
@@ -17,7 +23,16 @@ $(document).ready(function () {
     function senderText(message) {
         var chatBox = document.getElementById("chat-canvas-body");
         if (message.trim() !== "") {
-            chatBox.innerHTML += '<div class="row justify-content-end mb-3"><div class="width-size"><div class="sender_message">' + message + '</div></div></div>';
+            var row = document.createElement('div');
+            row.className = 'row justify-content-end mb-3';
+            var ws = document.createElement('div');
+            ws.className = 'width-size';
+            var msg = document.createElement('div');
+            msg.className = 'sender_message';
+            msg.textContent = message;
+            ws.appendChild(msg);
+            row.appendChild(ws);
+            chatBox.appendChild(row);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
     }
@@ -26,7 +41,16 @@ $(document).ready(function () {
     function receiverText(message) {
         var chatBox = document.getElementById("chat-canvas-body");
         if (message.trim() !== "") {
-            chatBox.innerHTML += '<div class="row justify-content-start mb-3"><div class="width-size"><div class="receiver_message">' + message + '</div></div></div>';
+            var row = document.createElement('div');
+            row.className = 'row justify-content-start mb-3';
+            var ws = document.createElement('div');
+            ws.className = 'width-size';
+            var msg = document.createElement('div');
+            msg.className = 'receiver_message';
+            msg.textContent = message;
+            ws.appendChild(msg);
+            row.appendChild(ws);
+            chatBox.appendChild(row);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
     }
