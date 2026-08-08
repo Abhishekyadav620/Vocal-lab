@@ -1,9 +1,13 @@
 import os
 from cryptography.fernet import Fernet
 
-# Use absolute paths for reliability
+# Key stored outside project root for security
+_JARVIS_DIR = os.path.join(os.path.expanduser("~"), ".jarvis")
+os.makedirs(_JARVIS_DIR, exist_ok=True)
+KEY_FILE = os.path.join(_JARVIS_DIR, ".key")
+
+# Vault stays in the project root
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-KEY_FILE = os.path.join(BASE_DIR, ".key")
 VAULT_FILE = os.path.join(BASE_DIR, ".vault")
 
 def get_crypto_key():
