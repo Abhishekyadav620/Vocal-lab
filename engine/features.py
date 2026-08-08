@@ -5,15 +5,15 @@ import struct
 import subprocess
 import time
 import webbrowser
-from playsound import playsound
+import pygame
 import eel
 import pyaudio
 import pyautogui
 import pygetwindow as gw
-from engine.command import speak
+from engine.speech import speak
 
 from engine.config import ASSISTANT_NAME, GEMINI_API_KEY
-# Playing assiatnt sound function
+# Playing assistant sound function
 import pywhatkit as kit
 import pvporcupine
 
@@ -25,10 +25,17 @@ _BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 con = sqlite3.connect(os.path.join(_BASE_DIR, "jarvis.db"), check_same_thread=False)
 cursor = con.cursor()
 
+# Initialize pygame mixer for non-blocking sound playback
+pygame.mixer.init()
+
 @eel.expose
 def playAssistantSound():
     music_dir = os.path.join(_BASE_DIR, "www", "assets", "audio", "start_sound.mp3")
-    playsound(music_dir)
+    try:
+        pygame.mixer.music.load(music_dir)
+        pygame.mixer.music.play()
+    except Exception as e:
+        print(f"playAssistantSound error: {e}")
 
     
 KNOWN_APPS = {
@@ -341,6 +348,8 @@ def whatsApp(mobile_no, message, flag, name):
 
 # chat bot
 _gemini_client = None
+_conversation_history = []
+MAX_HISTORY_TURNS = 10
 
 JARVIS_PERSONA = (
     "You are JARVIS, an intelligent personal AI assistant created by Tusar. "
@@ -358,22 +367,42 @@ LANG_INSTRUCTIONS = {
 
 
 def chatBot(query, lang='en'):
-    global _gemini_client
+    global _gemini_client, _conversation_history
     user_input = query.lower()
     system_prompt = LANG_INSTRUCTIONS.get(lang, LANG_INSTRUCTIONS['en'])
-    full_prompt = system_prompt + "\n\nUser: " + user_input
 
     try:
         if not GEMINI_API_KEY:
             speak("Sir, my Gemini brain is not configured. Please add an API key.")
             return "Key missing"
+
+        try:
+            eel.showThinking()()
+        except Exception:
+            pass
+
         if _gemini_client is None:
             _gemini_client = genai.Client(api_key=GEMINI_API_KEY)
+
+        # Build prompt with system instructions + conversation history + current user input
+        prompt_parts = [system_prompt]
+        for turn in _conversation_history:
+            prompt_parts.append(f"User: {turn['user']}")
+            prompt_parts.append(f"JARVIS: {turn['model']}")
+        prompt_parts.append(f"User: {user_input}")
+
+        full_prompt = "\n\n".join(prompt_parts)
+
         response = _gemini_client.models.generate_content(
             model='gemini-3.5-flash',
             contents=full_prompt
         )
         response_text = response.text
+
+        # Append to history
+        _conversation_history.append({'user': user_input, 'model': response_text})
+        if len(_conversation_history) > MAX_HISTORY_TURNS:
+            _conversation_history.pop(0)
 
         print(response_text)
         speak(response_text, lang)

@@ -1,7 +1,7 @@
 import eel
 
 from engine.features import playAssistantSound
-from engine.command import speak
+from engine.speech import speak
 
 
 def start():
