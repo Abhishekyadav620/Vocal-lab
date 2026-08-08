@@ -30,6 +30,17 @@
 // ==================== BOOT SEQUENCE ====================
 (function(){
     var lines=['bl1','bl2','bl3','bl4','bl5'],bar=document.getElementById('bootFill'),p=0;
+    function finishBoot(){
+        var b=document.getElementById('BootScreen');
+        if(b) b.remove();
+        var m=document.getElementById('JarvisMain');
+        if(m) m.removeAttribute('hidden');
+        var cb=document.getElementById('chatbox');
+        if(cb) cb.focus();
+    }
+    var bElem=document.getElementById('BootScreen');
+    if(bElem) bElem.addEventListener('click', finishBoot);
+
     var iv=setInterval(function(){
         p+=1;if(bar)bar.style.width=p+'%';
         if(p===12){var e=document.getElementById(lines[0]);if(e)e.classList.add('vis')}
@@ -37,13 +48,11 @@
         if(p===55){var e=document.getElementById(lines[2]);if(e)e.classList.add('vis')}
         if(p===78){var e=document.getElementById(lines[3]);if(e)e.classList.add('vis')}
         if(p===95){var e=document.getElementById(lines[4]);if(e)e.classList.add('vis')}
-        if(p>=100){clearInterval(iv);setTimeout(function(){
-            var b=document.getElementById('BootScreen');
-            if(b){b.style.transition='opacity 0.8s';b.style.opacity='0';setTimeout(function(){b.remove();
-                var m=document.getElementById('JarvisMain');if(m)m.removeAttribute('hidden');
-            },800)}
-        },600)}
-    },35);
+        if(p>=100){
+            clearInterval(iv);
+            setTimeout(finishBoot, 400);
+        }
+    },25);
 })();
 
 // ==================== CLOCK ====================

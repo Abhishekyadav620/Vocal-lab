@@ -62,5 +62,9 @@ $(document).ready(function () {
     function hideStart() {
         var main = document.getElementById('JarvisMain');
         if (main && main.hasAttribute('hidden')) main.removeAttribute('hidden');
+        var boot = document.getElementById('BootScreen');
+        if (boot) boot.remove();
+        var cb = document.getElementById('chatbox');
+        if (cb) cb.focus();
     }
 });

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    eel.init()();
+    eel.init();
 
     $('.text').textillate({
         loop: true, sync: true,
@@ -25,7 +25,7 @@ $(document).ready(function () {
         $("#SuitSection").addClass("dim");
         $("#SiriWave").attr("hidden", false);
         $(this).addClass("active");
-        eel.allCommands()();
+        eel.allCommands();
     });
 
     // Hotkey Win+J
@@ -34,16 +34,16 @@ $(document).ready(function () {
             eel.playAssistantSound();
             $("#SuitSection").addClass("dim");
             $("#SiriWave").attr("hidden", false);
-            eel.allCommands()();
+            eel.allCommands();
         }
     });
 
     // Text command
     function PlayAssistant(message) {
-        if (message !== "") {
+        if (message && message.trim() !== "") {
             $("#SuitSection").addClass("dim");
             $("#SiriWave").attr("hidden", false);
-            eel.allCommands(message)();
+            eel.allCommands(message.trim());
             $("#chatbox").val("");
             $("#MicBtn").attr('hidden', false).removeClass("active");
             $("#SendBtn").attr('hidden', true);
@@ -51,7 +51,7 @@ $(document).ready(function () {
     }
 
     function ShowHideButton(message) {
-        if (message.length === 0) {
+        if (!message || message.length === 0) {
             $("#MicBtn").attr('hidden', false);
             $("#SendBtn").attr('hidden', true);
         } else {
@@ -60,7 +60,12 @@ $(document).ready(function () {
         }
     }
 
-    $("#chatbox").keyup(function () { ShowHideButton($(this).val()); });
+    $("#chatbox").on('input keyup change', function () { ShowHideButton($(this).val()); });
     $("#SendBtn").click(function () { PlayAssistant($("#chatbox").val()); });
-    $("#chatbox").keypress(function (e) { if (e.which === 13) PlayAssistant($(this).val()); });
+    $("#chatbox").keypress(function (e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            PlayAssistant($("#chatbox").val());
+        }
+    });
 });
