@@ -58,12 +58,6 @@ $(document).ready(function () {
     eel.expose(hideLoader);
     function hideLoader() {}
 
-    eel.expose(hideFaceAuth);
-    function hideFaceAuth() {}
-
-    eel.expose(hideFaceAuthSuccess);
-    function hideFaceAuthSuccess() {}
-
     eel.expose(hideStart);
     function hideStart() {
         var main = document.getElementById('JarvisMain');

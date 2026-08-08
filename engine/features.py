@@ -1,7 +1,6 @@
 import os
 from urllib.parse import quote
 import sqlite3
-import struct
 import subprocess
 import time
 import webbrowser
@@ -13,9 +12,7 @@ import pygetwindow as gw
 from engine.speech import speak
 
 from engine.config import ASSISTANT_NAME, GEMINI_API_KEY
-# Playing assistant sound function
 import pywhatkit as kit
-import pvporcupine
 
 from engine.helper import extract_yt_term, remove_words
 from google import genai
@@ -151,7 +148,7 @@ def openCommand(query):
             return
 
         cursor.execute(
-            'SELECT path FROM sys_command WHERE name IN (?)', (app_name,))
+            'SELECT path FROM sys_command WHERE LOWER(name) = ?', (app_name.lower(),))
         results = cursor.fetchall()
 
         if len(results) != 0:
@@ -160,7 +157,7 @@ def openCommand(query):
             return
 
         cursor.execute(
-            'SELECT url FROM web_command WHERE name IN (?)', (app_name,))
+            'SELECT url FROM web_command WHERE LOWER(name) = ?', (app_name.lower(),))
         results = cursor.fetchall()
 
         if len(results) != 0:
@@ -241,44 +238,6 @@ def PlayYoutube(query):
     else:
         speak("What should I play on YouTube, Sir?")
 
-
-def hotword():
-    porcupine=None
-    paud=None
-    audio_stream=None
-    try:
-       
-        # pre trained keywords    
-        porcupine=pvporcupine.create(keywords=["jarvis","alexa"]) 
-        paud=pyaudio.PyAudio()
-        audio_stream=paud.open(rate=porcupine.sample_rate,channels=1,format=pyaudio.paInt16,input=True,frames_per_buffer=porcupine.frame_length)
-        
-        # loop for streaming
-        while True:
-            keyword=audio_stream.read(porcupine.frame_length)
-            keyword=struct.unpack_from("h"*porcupine.frame_length,keyword)
-
-            # processing keyword comes from mic 
-            keyword_index=porcupine.process(keyword)
-
-            # checking first keyword detetcted for not
-            if keyword_index>=0:
-                print("hotword detected")
-
-                # pressing shorcut key win+j
-                import pyautogui as autogui
-                autogui.keyDown("win")
-                autogui.press("j")
-                time.sleep(2)
-                autogui.keyUp("win")
-                
-    except Exception as e:
-        if porcupine is not None:
-            porcupine.delete()
-        if audio_stream is not None:
-            audio_stream.close()
-        if paud is not None:
-            paud.terminate()
 
 
 

@@ -6,10 +6,8 @@ google-genai
 cryptography
 
 # Audio & Speech
-playsound
 pyaudio
 SpeechRecognition
-pvporcupine
 pyttsx3
 edge_tts
 pygame-ce
