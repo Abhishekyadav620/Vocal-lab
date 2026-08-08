@@ -1,28 +1,30 @@
 // ==================== PARTICLES ====================
 (function(){
     var c=document.getElementById('particleCanvas');if(!c)return;
-    var x=c.getContext('2d'),w,h,pts=[],N=70,D=140;
+    var x=c.getContext('2d'),w,h,pts=[],N=40,D=140,D2=D*D,lastTime=0,fpsInterval=1000/30;
     function rs(){w=c.width=innerWidth;h=c.height=innerHeight}
     addEventListener('resize',rs);rs();
     for(var i=0;i<N;i++)pts.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.2+.4});
     var mx=-1,my=-1;
     document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY});
-    function draw(){
+    function draw(now){
+        requestAnimationFrame(draw);
+        if(now - lastTime < fpsInterval) return;
+        lastTime = now;
         x.clearRect(0,0,w,h);
         for(var i=0;i<pts.length;i++){
             var p=pts[i];p.x+=p.vx;p.y+=p.vy;
             if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;
             x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);x.fillStyle='rgba(0,212,255,0.3)';x.fill();
             for(var j=i+1;j<pts.length;j++){
-                var q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);
-                if(d<D){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.strokeStyle='rgba(0,212,255,'+(1-d/D)*.1+')';x.lineWidth=.5;x.stroke()}
+                var q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d2=dx*dx+dy*dy;
+                if(d2<D2){var d=Math.sqrt(d2);x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.strokeStyle='rgba(0,212,255,'+(1-d/D)*.1+')';x.lineWidth=.5;x.stroke()}
             }
-            if(mx>0){var dx=p.x-mx,dy=p.y-my,d=Math.sqrt(dx*dx+dy*dy);
-                if(d<180){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(mx,my);x.strokeStyle='rgba(0,212,255,'+(1-d/180)*.15+')';x.lineWidth=.6;x.stroke()}}
+            if(mx>0){var dx=p.x-mx,dy=p.y-my,d2=dx*dx+dy*dy;
+                if(d2<32400){var d=Math.sqrt(d2);x.beginPath();x.moveTo(p.x,p.y);x.lineTo(mx,my);x.strokeStyle='rgba(0,212,255,'+(1-d/180)*.15+')';x.lineWidth=.6;x.stroke()}}
         }
-        requestAnimationFrame(draw);
     }
-    draw();
+    requestAnimationFrame(draw);
 })();
 
 // ==================== BOOT SEQUENCE ====================
@@ -123,6 +125,7 @@
 
 // ==================== REAL-TIME STATS ====================
 (function(){
+    var diskCreated=false;
     function poll(){
         if(typeof eel==='undefined')return;
         eel.getSystemStats()(function(d){
@@ -140,12 +143,33 @@
             // Network
             var ns=document.getElementById('netSent'),nr=document.getElementById('netRecv'),ip=document.getElementById('ipAddr');
             if(ns)ns.textContent=d.net_sent+' MB';if(nr)nr.textContent=d.net_recv+' MB';if(ip)ip.textContent=d.ip;
-            // Disks
+            // Disks — create elements once, update values after
             var dc=document.getElementById('diskBars');
             if(dc&&d.disks){
-                var html='';
-                for(var k in d.disks){html+='<div class="disk-item"><span>'+k+'</span><div class="disk-bar"><div class="disk-fill dsk-fill" style="width:'+d.disks[k]+'%"></div></div><span>'+d.disks[k]+'%</span></div>'}
-                dc.innerHTML=html;
+                if(!diskCreated){
+                    dc.innerHTML='';
+                    for(var k in d.disks){
+                        var item=document.createElement('div');item.className='disk-item';item.dataset.disk=k;
+                        var lbl=document.createElement('span');lbl.textContent=k;
+                        var bar=document.createElement('div');bar.className='disk-bar';
+                        var fill=document.createElement('div');fill.className='disk-fill dsk-fill';fill.style.width=d.disks[k]+'%';
+                        var val=document.createElement('span');val.textContent=d.disks[k]+'%';
+                        bar.appendChild(fill);
+                        item.appendChild(lbl);item.appendChild(bar);item.appendChild(val);
+                        dc.appendChild(item);
+                    }
+                    diskCreated=true;
+                } else {
+                    for(var k in d.disks){
+                        var item=dc.querySelector('[data-disk="'+k+'"]');
+                        if(item){
+                            var fill=item.querySelector('.disk-fill');
+                            var val=item.querySelector('span:last-child');
+                            if(fill)fill.style.width=d.disks[k]+'%';
+                            if(val)val.textContent=d.disks[k]+'%';
+                        }
+                    }
+                }
             }
         });
     }
@@ -154,3 +178,13 @@
 
 // ==================== QUICK CMD ====================
 function quickCmd(cmd){if(typeof eel!=='undefined')eel.allCommands(cmd)()}
+
+// ==================== MOBILE PANELS ====================
+function toggleLeftPanel(){
+    var p = document.querySelector('.panel-left');
+    if(p) p.classList.toggle('active');
+}
+function toggleRightPanel(){
+    var p = document.querySelector('.panel-right');
+    if(p) p.classList.toggle('active');
+}

@@ -96,6 +96,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:#c8d
 .ai-msg-area{text-align:center;margin:8px 0;min-height:40px}
 .ai-msg-area h2{font-family:var(--fb);font-size:20px;color:rgba(200,220,232,.9);letter-spacing:1px;text-shadow:0 0 12px rgba(0,212,255,.2)}
 .ai-msg-area ul{list-style:none;padding:0;margin:0}
+.thinking-text{color:var(--amber);text-shadow:0 0 10px var(--amber);animation:thinkPulse 1.2s infinite ease-in-out}
+@keyframes thinkPulse{0%,100%{opacity:.4}50%{opacity:1}}
 
 /* INPUT BAR */
 .input-wrap{width:100%;max-width:550px;flex-shrink:0;margin-bottom:8px}
@@ -150,4 +152,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:#c8d
 
 /* RESPONSIVE */
 @media(max-width:1000px){.hud-grid{grid-template-columns:180px 1fr 180px;gap:8px;padding:8px}}
-@media(max-width:768px){.hud-grid{grid-template-columns:1fr}.panel-left,.panel-right{display:none}}
+@media(max-width:768px){
+  .hud-grid{grid-template-columns:1fr;position:relative}
+  .panel-left,.panel-right{
+    position:fixed;top:44px;bottom:0;width:260px;z-index:100;
+    background:rgba(0,10,20,0.95);backdrop-filter:blur(15px);
+    transition:transform .3s ease;box-shadow:0 0 20px rgba(0,212,255,0.2);
+  }
+  .panel-left{left:0;transform:translateX(-100%)}
+  .panel-left.active{transform:translateX(0)}
+  .panel-right{right:0;transform:translateX(100%)}
+  .panel-right.active{transform:translateX(0)}
+  .mobile-toggle-btn{background:rgba(0,212,255,0.1);border:1px solid var(--border);color:var(--cyan);border-radius:4px;padding:2px 6px;cursor:pointer}
+}
