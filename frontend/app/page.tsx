@@ -7,9 +7,11 @@ import { TelemetryPanel, SystemStats } from "./components/TelemetryPanel";
 import { MultimodalBar } from "./components/MultimodalBar";
 import { ActionFeed, MessageItem } from "./components/ActionFeed";
 import { EvalBenchmarkModal } from "./components/EvalBenchmarkModal";
-import { Terminal, Shield, Activity, Award, Volume2, VolumeX, Eye } from "lucide-react";
+import { InterviewContainer } from "./components/interview/InterviewContainer";
+import { Terminal, Shield, Activity, Award, Volume2, VolumeX, Eye, UserCheck } from "lucide-react";
 
 export default function VocalisHome() {
+  const [activeMode, setActiveMode] = useState<"jarvis" | "interview">("jarvis");
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [state, setState] = useState<"idle" | "listening" | "processing" | "speaking">("idle");
   const [stats, setStats] = useState<SystemStats | null>(null);
@@ -221,7 +223,6 @@ export default function VocalisHome() {
     setMessages((prev) =>
       prev.map((m) => (m.id === messageId ? { ...m, needsConfirmation: false } : m))
     );
-    // Execute authorized action
     handleSendQuery("Execute authorized action", false, "en");
   };
 
@@ -255,22 +256,50 @@ export default function VocalisHome() {
     <main className="min-h-screen bg-[#030712] text-gray-100 flex flex-col scanline relative">
       {/* Top Futuristic Header */}
       <header className="border-b border-cyan-500/20 bg-slate-950/80 backdrop-blur-md px-6 py-3.5 flex items-center justify-between sticky top-0 z-30">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-400/40 flex items-center justify-center shadow-[0_0_15px_rgba(0,240,255,0.4)]">
-            <Terminal className="w-4 h-4 text-cyan-400" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-base font-black font-mono tracking-wider text-cyan-300">
-                VOCALIS AI
-              </h1>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950/80 border border-cyan-500/40 text-cyan-400 font-semibold">
-                v2.0.0 MULTIMODAL OS
-              </span>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-400/40 flex items-center justify-center shadow-[0_0_15px_rgba(0,240,255,0.4)]">
+              <Terminal className="w-4 h-4 text-cyan-400" />
             </div>
-            <p className="text-[11px] text-gray-400 font-mono">
-              Hybrid Vision + Voice Autonomous Intelligence Engine
-            </p>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-base font-black font-mono tracking-wider text-cyan-300">
+                  VOCALIS AI
+                </h1>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950/80 border border-cyan-500/40 text-cyan-400 font-semibold">
+                  v2.0.0 MULTIMODAL OS
+                </span>
+              </div>
+              <p className="text-[11px] text-gray-400 font-mono hidden sm:block">
+                Hybrid Vision + Voice Autonomous Intelligence Engine
+              </p>
+            </div>
+          </div>
+
+          {/* Mode Navigation Switcher */}
+          <div className="flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-cyan-500/30 font-mono text-xs">
+            <button
+              onClick={() => setActiveMode("jarvis")}
+              className={`px-3 py-1 rounded-lg transition font-bold flex items-center gap-1.5 ${
+                activeMode === "jarvis"
+                  ? "bg-cyan-500/20 text-cyan-300 border border-cyan-400/50 shadow-[0_0_10px_rgba(0,240,255,0.3)]"
+                  : "text-gray-400 hover:text-cyan-300"
+              }`}
+            >
+              <Terminal className="w-3.5 h-3.5" />
+              <span>[JARVIS]</span>
+            </button>
+            <button
+              onClick={() => setActiveMode("interview")}
+              className={`px-3 py-1 rounded-lg transition font-bold flex items-center gap-1.5 ${
+                activeMode === "interview"
+                  ? "bg-cyan-500/20 text-cyan-300 border border-cyan-400/50 shadow-[0_0_10px_rgba(0,240,255,0.3)]"
+                  : "text-gray-400 hover:text-cyan-300"
+              }`}
+            >
+              <UserCheck className="w-3.5 h-3.5 text-cyan-400" />
+              <span>[INTERVIEW]</span>
+            </button>
           </div>
         </div>
 
@@ -278,7 +307,7 @@ export default function VocalisHome() {
         <div className="flex items-center gap-3 font-mono text-xs">
           <button
             onClick={() => setIsEvalOpen(true)}
-            className="px-3 py-1.5 rounded-xl bg-cyan-950 border border-cyan-500/40 text-cyan-300 hover:bg-cyan-900/50 flex items-center gap-1.5 transition shadow-[0_0_15px_rgba(0,240,255,0.2)]"
+            className="px-3 py-1.5 rounded-xl bg-cyan-950 border border-cyan-500/40 text-cyan-300 hover:bg-cyan-900/50 hidden md:flex items-center gap-1.5 transition shadow-[0_0_15px_rgba(0,240,255,0.2)]"
           >
             <Award className="w-4 h-4 text-cyan-400" />
             <span>Eval Harness (20 Tests)</span>
@@ -307,71 +336,77 @@ export default function VocalisHome() {
         </div>
       </header>
 
-      {/* Main Grid Layout */}
-      <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left Column: Telemetry & Status (4 cols) */}
-        <div className="lg:col-span-4 flex flex-col gap-5">
-          <TelemetryPanel stats={stats} />
+      {/* Main View Mode Selector */}
+      {activeMode === "jarvis" ? (
+        <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* Left Column: Telemetry & Status (4 cols) */}
+          <div className="lg:col-span-4 flex flex-col gap-5">
+            <TelemetryPanel stats={stats} />
 
-          <div className="glass-panel p-4 rounded-2xl flex flex-col gap-2.5 font-mono text-xs">
-            <span className="text-gray-400 uppercase text-[10px] tracking-wider flex items-center gap-1.5">
-              <Shield className="w-3.5 h-3.5 text-cyan-400" /> Core Capabilities
-            </span>
-            <div className="flex flex-col gap-1 text-[11px] text-gray-300">
-              <div className="flex items-center justify-between py-1 border-b border-slate-800">
-                <span>Multi-Lingual STT/TTS</span>
-                <strong className="text-emerald-400">EN, HI, BN</strong>
-              </div>
-              <div className="flex items-center justify-between py-1 border-b border-slate-800">
-                <span>Vision Screen Analysis</span>
-                <strong className="text-cyan-400">Gemini 2.0 Flash</strong>
-              </div>
-              <div className="flex items-center justify-between py-1 border-b border-slate-800">
-                <span>Tool Safety Guardrails</span>
-                <strong className="text-cyan-400">Active (70% Gate)</strong>
-              </div>
-              <div className="flex items-center justify-between py-1">
-                <span>Backend Framework</span>
-                <strong className="text-cyan-400">FastAPI + UV</strong>
+            <div className="glass-panel p-4 rounded-2xl flex flex-col gap-2.5 font-mono text-xs">
+              <span className="text-gray-400 uppercase text-[10px] tracking-wider flex items-center gap-1.5">
+                <Shield className="w-3.5 h-3.5 text-cyan-400" /> Core Capabilities
+              </span>
+              <div className="flex flex-col gap-1 text-[11px] text-gray-300">
+                <div className="flex items-center justify-between py-1 border-b border-slate-800">
+                  <span>Multi-Lingual STT/TTS</span>
+                  <strong className="text-emerald-400">EN, HI, BN</strong>
+                </div>
+                <div className="flex items-center justify-between py-1 border-b border-slate-800">
+                  <span>Vision Screen Analysis</span>
+                  <strong className="text-cyan-400">Gemini 2.0 Flash</strong>
+                </div>
+                <div className="flex items-center justify-between py-1 border-b border-slate-800">
+                  <span>Tool Safety Guardrails</span>
+                  <strong className="text-cyan-400">Active (70% Gate)</strong>
+                </div>
+                <div className="flex items-center justify-between py-1">
+                  <span>Backend Framework</span>
+                  <strong className="text-cyan-400">FastAPI + UV</strong>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Center/Right Column: Arc Reactor Core, Action Feed & Multimodal Bar (8 cols) */}
-        <div className="lg:col-span-8 flex flex-col gap-5">
-          {/* Arc Reactor Centerpiece */}
-          <div className="glass-panel p-6 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden">
-            <ArcReactor state={state} />
-          </div>
-
-          {/* Action and Conversation Feed */}
-          <div className="glass-panel p-5 rounded-2xl flex flex-col min-h-[340px]">
-            <div className="flex items-center justify-between border-b border-cyan-500/20 pb-3 mb-3">
-              <span className="font-mono text-xs uppercase tracking-widest text-cyan-400 flex items-center gap-2">
-                <Activity className="w-4 h-4 text-cyan-400 animate-pulse" /> Agentic Activity Stream
-              </span>
-              <span className="text-[10px] font-mono text-gray-400">
-                Confidence &amp; Safety Guardrails Enabled
-              </span>
+          {/* Center/Right Column: Arc Reactor Core, Action Feed & Multimodal Bar (8 cols) */}
+          <div className="lg:col-span-8 flex flex-col gap-5">
+            {/* Arc Reactor Centerpiece */}
+            <div className="glass-panel p-6 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden">
+              <ArcReactor state={state} />
             </div>
-            <ActionFeed
-              messages={messages}
-              onConfirmAction={handleConfirmAction}
-              onCancelAction={handleCancelAction}
-              onPlayAudio={handlePlayAudio}
+
+            {/* Action and Conversation Feed */}
+            <div className="glass-panel p-5 rounded-2xl flex flex-col min-h-[340px]">
+              <div className="flex items-center justify-between border-b border-cyan-500/20 pb-3 mb-3">
+                <span className="font-mono text-xs uppercase tracking-widest text-cyan-400 flex items-center gap-2">
+                  <Activity className="w-4 h-4 text-cyan-400 animate-pulse" /> Agentic Activity Stream
+                </span>
+                <span className="text-[10px] font-mono text-gray-400">
+                  Confidence &amp; Safety Guardrails Enabled
+                </span>
+              </div>
+              <ActionFeed
+                messages={messages}
+                onConfirmAction={handleConfirmAction}
+                onCancelAction={handleCancelAction}
+                onPlayAudio={handlePlayAudio}
+              />
+            </div>
+
+            {/* Multimodal Input Bar */}
+            <MultimodalBar
+              onSendQuery={handleSendQuery}
+              isListening={state === "listening"}
+              onToggleListening={toggleListening}
+              isLoading={state === "processing"}
             />
           </div>
-
-          {/* Multimodal Input Bar */}
-          <MultimodalBar
-            onSendQuery={handleSendQuery}
-            isListening={state === "listening"}
-            onToggleListening={toggleListening}
-            isLoading={state === "processing"}
-          />
         </div>
-      </div>
+      ) : (
+        <div className="flex-1 p-4 sm:p-6 flex flex-col">
+          <InterviewContainer />
+        </div>
+      )}
 
       {/* Eval Benchmark Modal for Hackathon Judges */}
       <EvalBenchmarkModal isOpen={isEvalOpen} onClose={() => setIsEvalOpen(false)} />
