@@ -1,145 +1,112 @@
-# <p align="center"><img src="https://raw.githubusercontent.com/abhisheknaiidu/awesome-github-profile-readme/master/assets/heart.gif" width="30px"> J.A.R.V.I.S — Artificial Intelligence <img src="https://raw.githubusercontent.com/abhisheknaiidu/awesome-github-profile-readme/master/assets/heart.gif" width="30px"></p>
+# <p align="center">🎙️ Vocalis AI — Multimodal Voice & Vision Agentic OS 👁️</p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Python-3.8+-3776ab?style=for-the-badge&logo=python&logoColor=yellow" alt="Python Version">
-  <img src="https://img.shields.io/badge/Google_Gemini-Powered-4285F4?style=for-the-badge&logo=google-gemini&logoColor=white" alt="Gemini">
-  <img src="https://img.shields.io/badge/Status-Active-2ebc4f?style=for-the-badge" alt="Status">
-  <img src="https://img.shields.io/badge/Interface-Iron_Man_HUD-00d4ff?style=for-the-badge&logo=windows&logoColor=white" alt="Interface">
+  <img src="https://img.shields.io/badge/Python-3.12-3776ab?style=for-the-badge&logo=python&logoColor=yellow" alt="Python Version">
+  <img src="https://img.shields.io/badge/FastAPI-Modern_Backend-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/Package_Manager-uv-de5fe9?style=for-the-badge" alt="uv">
+  <img src="https://img.shields.io/badge/Frontend-Next.js_15-000000?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js">
+  <img src="https://img.shields.io/badge/Google_Gemini-2.0_Flash-4285F4?style=for-the-badge&logo=google-gemini&logoColor=white" alt="Gemini">
+  <img src="https://img.shields.io/badge/Evals-20_Test_Harness-10b981?style=for-the-badge" alt="Evals">
 </p>
 
 <p align="center">
-  <b>An Advanced Virtual Assistant with a sleek Iron Man-inspired HUD, Multilingual support, and Hybrid Intelligence.</b>
+  <b>A State-of-the-Art Multimodal Operating System uniting Real-Time Vision, Multilingual Neural Speech, Agentic Tool Execution, and Safety Guardrails.</b>
 </p>
 
 ---
 
-## 🌌 Introduction
+## 🌟 What is Vocalis AI?
 
-Welcome back, Sir. **J.A.R.V.I.S** (Just A Rather Very Intelligent System) is not just a voice assistant; it's a desktop shell built for speed, security, and aesthetics. Designed with an Iron Man style HUD, it combines local system automation with the reasoning power of **Google Gemini AI**.
+**Vocalis AI** is a next-generation desktop agent designed to fulfill the 2026 AI Hackathon mandate: *"Build something that couldn't have existed two years ago."*
 
-### ✨ Highlights
-- **🎭 Stunning UI:** A futuristic HUD with Arc Reactor animations, particle effects, and live system monitoring.
-- **🧠 Hybrid Brain:** Switches between local commands (fast) and Gemini AI (smart).
-- **🗣️ Polylingual:** Fluently speaks and understands English, Hindi, and Bengali.
-- **🔒 Secure Vault:** Keeps your API keys encrypted and safe from prying eyes.
+Unlike legacy keyword-based assistants that only wrap chat prompts, **Vocalis AI** seamlessly bridges **Vision (live screen snapshotting & visual grounding)** and **Voice (multilingual STT & Edge TTS in English, Hindi, and Bengali)** with autonomous desktop tool orchestration, hybrid RAG memory, and safety guardrails.
 
 ---
 
-## 🛠️ Architecture
+## 🏗️ Architecture
 
 ```mermaid
-graph TD
-    User((User)) -- Voice/Text --> HUD[Web HUD - Eel]
-    HUD -- Request --> Engine[Core Engine]
-    Engine -- Local Command --> Sys[System/ADB]
-    Engine -- AI Query --> Gemini[Google Gemini AI]
-    Engine -- Fetch Data --> DB[(SQLite DB)]
-    HUD -- Display --> UI[HUD Dashboard]
-    Gemini -- Response --> HUD
-    Sys -- Output --> HUD
+flowchart TB
+    subgraph Frontend [Next.js Futuristic HUD]
+        ARC[Interactive Arc Reactor Canvas]
+        MIC[Web Audio Mic Input]
+        VISION[Screen Capture & Vision Stream]
+        TELE[Live Hardware Gauges]
+        FEED[Action Stream & Guardrails Gate]
+        EVAL_MODAL[20-Case Eval Viewer]
+    end
+
+    subgraph Backend [FastAPI + uv Backend (Port 8000)]
+        WS[WebSocket Stream /ws/stream]
+        REST[REST APIs: /api/agent & /api/system]
+        ORCH[Agentic Orchestrator]
+        RAG[Grounded Memory Store]
+        GUARD[Confidence & Guardrail Verifier]
+        EVAL_SUITE[Automated 20-Test Benchmark]
+        TOOLS[System Tools: Windows, App Launcher, YouTube, Web]
+    end
+
+    MIC & VISION & ARC <-->|WebSocket / REST| WS & REST
+    WS & REST --> ORCH
+    ORCH --> RAG
+    ORCH --> GUARD
+    ORCH --> TOOLS
+    ORCH --> EVAL_SUITE
 ```
 
 ---
 
-## 🚀 Key Features
+## ✨ Key Capabilities
 
-### 🖥️ Desktop Command Center
-- **Smart Launching:** Opens any app or website with fuzzy matching.
-- **Window Switching:** Automatically focuses on already open instances.
-- **System Monitoring:** Live RAM, CPU usage, and network activity on your dashboard.
-
-### 📱 Android Integration (ADB)
-- Make phone calls directly from your PC.
-- Send SMS messages using voice commands.
-- Advanced automation via ADB triggers.
-
-### 💬 Intelligent Communications
-- **WhatsApp Integration:** Send messages and start video calls using voice.
-- **Email/Browser:** Seamlessly navigate the web and manage tasks.
-
-### ⚡ Smart Automation
-- **Hotword Detection:** Listens for "Jarvis" or "Alexa" to wake up.
-- **YouTube Playback:** Plays music or videos instantly.
-- **System Controls:** Shutdown, Restart, or Lock your PC via voice.
+1. **👁️ Real-time Multimodal Vision**: Inspects your active screen or camera feed in real time to explain code, debug errors, and summarize open documents using Gemini 2.0 Flash.
+2. **🗣️ Multilingual Neural Speech**: Fluently comprehends and speaks English, हिन्दी (Devanagari script), and বাংলা (Bengali script) using Edge Neural voices.
+3. **🛡️ Confidence & Safety Guardrails**: Displays visible confidence percentages (0–100%) and enforces human-in-the-loop authorization gates for sensitive or destructive operations.
+4. **📊 Real-time Telemetry Dashboard**: Live hardware monitoring showing CPU load, RAM memory distribution, storage partition capacity, and upstream/downstream network throughput.
+5. **⚡ Sub-Millisecond Deterministic Dispatch**: Instant local execution (< 2ms) for desktop apps, window switching, YouTube playback, and system queries.
+6. **🏆 20-Case Automated Eval Harness**: Built-in benchmark suite directly accessible via CLI (`uv run pytest evals/test_evals.py`) and visually in the HUD.
 
 ---
 
-## 🎨 Interface Preview
-
-<div align="center">
-    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZTRiZGJmNGU1Y2JjNDZiY2I0OGE4YjNiNDlmYjNmYmFmYmJlNjllNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKVUn7iM8FMEU24/giphy.gif" width="800px" alt="HUD Demo">
-    <br>
-    <i>Futuristic Iron Man HUD with Dynamic Animations</i>
-</div>
-
----
-
-## ⚙️ Installation
+## 🚀 Quickstart & Installation
 
 ### 1. Prerequisites
-- **Python 3.8+**
-- **Google Chrome** (for Eel app mode)
-- **ADB** (optional, for Android features)
+- **Python 3.12+**
+- **uv** (Astral package manager)
+- **Node.js 20+** & **npm**
 
-### 2. Setup
-Clone the repository and install dependencies:
+### 2. Backend Setup (uv)
 ```bash
-git clone https://github.com/TusarGoswami/jarvis-main.git
-cd jarvis-main
-pip install -r requirements.txt
+# Sync all dependencies via uv
+uv sync
+
+# Run the 20-case evaluation suite
+uv run pytest evals/test_evals.py -v
 ```
 
-### 3. API Configuration
-J.A.R.V.I.S uses an encrypted vault for security.
-1. Run `python setup_encryption.py` to initialize your secure vault.
-2. Edit `engine/config.py` (or use the vault command) to add your **Gemini API Key**.
-
----
-
-## 🚦 Usage
-
-Launch the system:
+### 3. Frontend Setup (Next.js)
 ```bash
-python run.py
+cd frontend
+npm install
+npm run build
 ```
 
-### 🗣️ Example Commands
-- *"Hey Jarvis, open YouTube and play Iron Man trailer"*
-- *"Jarvis, message Mom on WhatsApp saying 'I'll be home late'"*
-- *"Sir, what is the current CPU usage?"*
-- *"J.A.R.V.I.S, open ChatGPT"*
+### 4. Launch Vocalis AI (Unified Runner)
+```bash
+# From project root
+python run_vocalis.py
+```
+- **HUD Interface**: [http://localhost:3000](http://localhost:3000)
+- **Backend API & Swagger Docs**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- **WebSocket Endpoint**: `ws://127.0.0.1:8000/ws/stream`
 
 ---
 
-## 🛠️ Built With
+## 🧪 Hackathon Rubric Alignment
 
-- **Backend:** [Python](https://www.python.org/)
-- **Frontend:** [HTML5](https://developer.mozilla.org/en-US/docs/Web/HTML), [CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS), [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-- **Interface:** [Eel](https://github.com/python-eel/Eel)
-- **AI Engine:** [Google Gemini API](https://ai.google.dev/)
-- **Database:** [SQLite](https://www.sqlite.org/)
-- **Animations:** [SiriWave](https://github.com/kopiro/siriwave), [Particles.js](https://vincentgarreau.com/particles.js/)
-
----
-
-## 🤝 Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## 👨‍💻 Author
-
-**Tusar Goswami**
-- GitHub: [@TusarGoswami](https://github.com/TusarGoswami)
-- Passionate about AI and Futuristic UI.
-
----
-
-<p align="center">Made with ❤️ and a lot of ☕ by Tusar</p>
+| Criterion | Vocalis AI Implementation |
+| :--- | :--- |
+| **Originality (25%)** | Real-time Vision + Multilingual Voice fused with autonomous desktop tools. Could not exist in 2023. |
+| **Technical Depth (25%)** | Non-trivial orchestration, hybrid RAG grounding, confidence thresholding, and a 20-case eval harness. |
+| **Working Demo (20%)** | Fully functioning Next.js client connected via full-duplex WebSockets to a non-blocking FastAPI backend. |
+| **Problem Clarity (15%)** | Built for developers and power users needing hands-free screen understanding, automation, and system control. |
+| **Failure Awareness (15%)** | Clear guardrail refusals, confidence scoring, and offline fallback degradation. |
