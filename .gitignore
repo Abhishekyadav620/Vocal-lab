@@ -1,11 +1,27 @@
-venv_jarvis/
+# System
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+.DS_Store
+
+# Virtual Environments
+venv/
+.venv/
+venv_jarvis/
+.python-version
+
+# Data & Config Vault
 contacts.csv
 jarvis.db
 /engine/cookies.json
 .env
 .key
-.vault
+.vault
+
+# Frontend dependencies & builds
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/.vercel/

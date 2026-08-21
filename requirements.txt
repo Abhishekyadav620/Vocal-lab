@@ -1,24 +1,33 @@
-# --- J.A.R.V.I.S PROJECT DEPENDENCIES ---
+# --- Vocalis AI Dependencies ---
 
-# Core
-eel
-google-genai
-cryptography
+# API & Core Backend
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+websockets>=13.1
+pydantic>=2.10.0
+google-genai>=1.0.0
+cryptography>=43.0.0
+python-multipart>=0.0.12
+httpx>=0.27.2
+
+# Vision & Multimodal
+mss>=9.0.0
+pillow>=11.0.0
 
 # Audio & Speech
-pyaudio
-SpeechRecognition
-pyttsx3
-edge_tts
-pygame-ce
+SpeechRecognition>=3.10.0
+pyttsx3>=2.90
+edge-tts>=6.1.12
+pygame-ce>=2.5.0
 
-# System Automation
-pyautogui
-pygetwindow
-pywhatkit
-psutil
+# Desktop & System Automation
+pyautogui>=0.9.54
+pygetwindow>=0.0.9
+pywhatkit>=5.4
+psutil>=6.0.0
+requests>=2.32.0
+pywin32>=306
 
-# Utils
-requests
-pywin32
-
+# Testing & Evals
+pytest>=8.3.0
+pytest-asyncio>=0.24.0
