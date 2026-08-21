@@ -62,7 +62,7 @@ def start():
     backend_proc = subprocess.Popen(
         [
             python_exe, "-m", "uvicorn", "app.main:app", 
-            "--host", "127.0.0.1", "--port", "8005", "--reload",
+            "--host", "0.0.0.0", "--port", "8005", "--reload",
             "--reload-dir", "app"
         ],
         cwd=base_dir
