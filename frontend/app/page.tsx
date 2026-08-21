@@ -22,10 +22,18 @@ export default function VocalisHome() {
 
   // Initialize WebSocket connection to FastAPI backend
   useEffect(() => {
+    const getBackendHost = () => {
+      if (process.env.NEXT_PUBLIC_BACKEND_HOST) return process.env.NEXT_PUBLIC_BACKEND_HOST;
+      if (typeof window !== "undefined") return `${window.location.hostname}:8005`;
+      return "127.0.0.1:8005";
+    };
+
     let ws: WebSocket;
     const connect = () => {
       try {
-        ws = new WebSocket("ws://127.0.0.1:8005/ws/stream");
+        const host = getBackendHost();
+        const protocol = typeof window !== "undefined" && window.location.protocol === "https:" ? "wss" : "ws";
+        ws = new WebSocket(`${protocol}://${host}/ws/stream`);
         wsRef.current = ws;
 
         ws.onopen = () => {
@@ -88,7 +96,9 @@ export default function VocalisHome() {
     // Fetch initial system telemetry via REST
     const fetchStats = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8005/api/system/stats");
+        const host = getBackendHost();
+        const protocol = typeof window !== "undefined" && window.location.protocol === "https:" ? "https" : "http";
+        const res = await fetch(`${protocol}://${host}/api/system/stats`);
         if (res.ok) {
           const json = await res.json();
           setStats(json.data);

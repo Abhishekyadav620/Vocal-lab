@@ -43,6 +43,21 @@ def start():
             print(f"Using virtual environment Python: {python_exe}")
             break
 
+    # Verify python dependencies (uvicorn)
+    try:
+        subprocess.check_call([python_exe, "-c", "import uvicorn"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception:
+        print("Missing required Python packages (uvicorn). Installing requirements...")
+        req_file = os.path.join(base_dir, "requirements.txt")
+        if os.path.exists(req_file):
+            subprocess.run([python_exe, "-m", "pip", "install", "-r", req_file], check=True)
+
+    # Verify frontend node_modules
+    node_modules_dir = os.path.join(frontend_dir, "node_modules")
+    if not os.path.exists(node_modules_dir):
+        print("Frontend dependencies missing (node_modules). Running npm install...")
+        subprocess.run("npm install", cwd=frontend_dir, shell=True, check=True)
+
     print("[1/2] Starting FastAPI Backend on http://127.0.0.1:8005 ...")
     backend_proc = subprocess.Popen(
         [
