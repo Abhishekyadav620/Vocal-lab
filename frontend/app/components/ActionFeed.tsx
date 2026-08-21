@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { CheckCircle2, AlertTriangle, ShieldCheck, ShieldAlert, Cpu, Sparkles, Volume2 } from "lucide-react";
+import { CheckCircle2, ShieldCheck, ShieldAlert, Cpu, Sparkles, Volume2 } from "lucide-react";
 
 export interface MessageItem {
   id: string;

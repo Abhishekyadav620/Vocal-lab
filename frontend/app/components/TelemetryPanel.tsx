@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Cpu, HardDrive, Wifi, Activity, Battery } from "lucide-react";
+import { Cpu, HardDrive, Wifi, Activity } from "lucide-react";
 
 export interface SystemStats {
   cpu_percent: number;

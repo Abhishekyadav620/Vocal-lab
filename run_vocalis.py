@@ -11,6 +11,24 @@ def start():
     base_dir = os.path.dirname(os.path.abspath(__file__))
     frontend_dir = os.path.join(base_dir, "frontend")
 
+    # Clean port bindings to avoid Address Already In Use / lock conflicts
+    import re
+    for port in [3000, 8000]:
+        try:
+            output = subprocess.check_output(f"netstat -ano | findstr :{port}", shell=True).decode()
+            pids = set()
+            for line in output.strip().split('\n'):
+                if 'LISTENING' in line:
+                    parts = re.split(r'\s+', line.strip())
+                    if len(parts) >= 5:
+                        pids.add(parts[-1])
+            for pid in pids:
+                print(f"Port {port} is occupied by PID {pid}. Terminating process...")
+                subprocess.run(f"taskkill /F /PID {pid}", shell=True, capture_output=True)
+        except Exception:
+            pass
+
+
     # Auto-detect virtual environment python executable
     python_exe = sys.executable
     venv_candidates = [
