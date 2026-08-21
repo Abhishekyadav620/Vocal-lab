@@ -10,7 +10,7 @@ class Settings(BaseModel):
     ASSISTANT_NAME: str = "Vocalis AI"
     APP_VERSION: str = "2.0.0"
     HOST: str = "127.0.0.1"
-    PORT: int = 8000
+    PORT: int = 8005
     DEBUG: bool = True
     
     # Model configuration

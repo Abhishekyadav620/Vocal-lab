@@ -5,7 +5,7 @@ import time
 
 def start():
     print("=" * 60)
-    print("  🚀 INITIALIZING VOCALIS AI MULTIMODAL AGENTIC OS")
+    print("  INITIALIZING VOCALIS AI MULTIMODAL AGENTIC OS")
     print("=" * 60)
 
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -13,7 +13,7 @@ def start():
 
     # Clean port bindings to avoid Address Already In Use / lock conflicts
     import re
-    for port in [3000, 8000]:
+    for port in [3000, 8005]:
         try:
             output = subprocess.check_output(f"netstat -ano | findstr :{port}", shell=True).decode()
             pids = set()
@@ -43,14 +43,12 @@ def start():
             print(f"Using virtual environment Python: {python_exe}")
             break
 
-    print("[1/2] Starting FastAPI Backend on http://127.0.0.1:8000 ...")
+    print("[1/2] Starting FastAPI Backend on http://127.0.0.1:8005 ...")
     backend_proc = subprocess.Popen(
         [
             python_exe, "-m", "uvicorn", "app.main:app", 
-            "--host", "127.0.0.1", "--port", "8000", "--reload",
-            "--reload-exclude", "frontend/*",
-            "--reload-exclude", ".venv/*",
-            "--reload-exclude", "venv/*"
+            "--host", "127.0.0.1", "--port", "8005", "--reload",
+            "--reload-dir", "app"
         ],
         cwd=base_dir
     )
@@ -64,10 +62,10 @@ def start():
         shell=True
     )
 
-    print("\n✨ Vocalis AI is running!")
-    print("   👉 HUD Interface: http://localhost:3000")
-    print("   👉 Backend Docs:  http://127.0.0.1:8000/docs")
-    print("   👉 WebSocket:     ws://127.0.0.1:8000/ws/stream\n")
+    print("\nVocalis AI is running!")
+    print("   - HUD Interface: http://localhost:3000")
+    print("   - Backend Docs:  http://127.0.0.1:8005/docs")
+    print("   - WebSocket:     ws://127.0.0.1:8005/ws/stream\n")
 
     try:
         backend_proc.wait()

@@ -25,7 +25,7 @@ export default function VocalisHome() {
     let ws: WebSocket;
     const connect = () => {
       try {
-        ws = new WebSocket("ws://127.0.0.1:8000/ws/stream");
+        ws = new WebSocket("ws://127.0.0.1:8005/ws/stream");
         wsRef.current = ws;
 
         ws.onopen = () => {
@@ -88,7 +88,7 @@ export default function VocalisHome() {
     // Fetch initial system telemetry via REST
     const fetchStats = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/system/stats");
+        const res = await fetch("http://127.0.0.1:8005/api/system/stats");
         if (res.ok) {
           const json = await res.json();
           setStats(json.data);
@@ -173,7 +173,7 @@ export default function VocalisHome() {
     } else {
       // Fallback REST endpoint
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/agent/command", {
+        const res = await fetch("http://127.0.0.1:8005/api/agent/command", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -223,7 +223,7 @@ export default function VocalisHome() {
 
   const handlePlayAudio = async (text: string, lang?: string) => {
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/agent/tts", {
+      const res = await fetch("http://127.0.0.1:8005/api/agent/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text, language: lang || "en" }),
